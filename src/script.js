@@ -1,12 +1,8 @@
 import "./main.scss";
-// import * as THREE from "three";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-// import * as dat from "dat.gui";
-// import { DoubleSide } from "three";
-// import { Curtains, Plane,Vec2 } from "curtainsjs";
-const ISFRenderer = require(".//build.js").Renderer;
-
-let canvas = undefined;
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import * as dat from "dat.gui";
+import { DoubleSide } from "three";
 
 // const threeJS = () => {
 //   /**
@@ -161,22 +157,8 @@ const detectScroll = (el, fs, vs, obj = "class", cb) => {
           mask.classList.add("active"); 
         }
 
-        // if(obj == 'class'){
-        //  mask.classList.add("active"); 
-        // }if(obj == 'shader'){
-        //   mask.classList.add("active"); 
-        //  }
-
-        if(cb){
-          cb(fs, vs, el);
-        }
-
-
-
-  
-        // if (obj == "shader" && mask.classList.contains('active') && !mask.classList.contains('created')) {
-        //   mask.classList.add("created");
-        //   // shaders(fs, vs, el);
+        // if(cb){
+        //   cb(fs, vs, el);
         // }
       }
     }
@@ -184,95 +166,11 @@ const detectScroll = (el, fs, vs, obj = "class", cb) => {
 };
 
 
-function shaders(fsFilename, vsFilename, shaderContainer) {
-
-  const container = document.querySelector(shaderContainer);
-
-  if(!container.classList.contains('created')){
-
-    console.log('shaderContainer', container)
-  let video = null;
-  async function loadFile(src, callback) {
-    const response = await fetch("shaders/" + src);
-    const body = await response.text();
-
-    callback(body);
-  }
-
-  function createRendering(label) {
-    let fsSrc;
-    const fsLoaded = (response) => {
-      fsSrc = response;
-
-      if (vsFilename) {
-        loadFile(vsFilename, vsLoaded);
-      } else {
-        vsLoaded();
-      }
-    };
-
-    const vsLoaded = (vsSrc) => {
-
-      canvas = document.createElement("canvas");
-      const title = document.createElement("div");
-
-      title.style.position = "absolute";
-      title.style.top = "0";
-      title.style.color = "white";
-      title.style.left = "0";
-
-      container.style.position = "relative";
-      container.appendChild(canvas);
-      container.appendChild(title);
-      console.log(container.offsetWidth);
-
-      title.textContent = fsFilename;
-
-      if (label) {
-        title.textContent += "(" + label + ")";
-      }
-
-      canvas.width = container.offsetWidth;
-      canvas.height = container.offsetHeight;
-      document.body.appendChild(container);
-
-      // Using webgl2 for non-power-of-two textures
-      const gl = canvas.getContext("webgl2");
-      const renderer = new ISFRenderer(gl);
-      console.log(ISFRenderer);
-      renderer.loadSource(fsSrc, vsSrc);
-
-      const animate = () => {
-        requestAnimationFrame(animate);
-
-        // tapestryfract doesn't have inputImage so we'll need to check
-        if ("inputImage" in renderer.uniforms) {
-          renderer.setValue("inputImage", video);
-        }
-
-        renderer.draw(canvas);
-      };
-
-      requestAnimationFrame(animate);
-    };
-
-    loadFile(fsFilename, fsLoaded);
-  }
-  createRendering();
-  container.classList.add('created')
-}
-  // createRendering('geodesic.fs','cosplay.vs', '.shaders6');
-}
 
 function init() {
   createClass();
   // rotateElement();
   detectScroll(".mask__wrapper");
-  detectScroll(".shaders", "squareCell.fs", "cosplay.vs", "shader", shaders);
-  detectScroll(".shaders2", "cosplay.fs", "cosplay.vs", "shader", shaders);
-  detectScroll(".shaders3", "vortex.fs", "cosplay.vs", "shader", shaders);
-  detectScroll(".shaders4", "tunnelVIsion.fs", "cosplay.vs", "shader", shaders);
-  detectScroll(".shaders5", "detailVortex.fs", "cosplay.vs", "shader", shaders);
 }
 
 document.addEventListener("DOMContentLoaded", init());
