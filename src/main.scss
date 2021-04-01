@@ -1,0 +1,211 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  font-family: "Syne Mono", monospace;
+}
+
+.webgl {
+  position: relative;
+  top: 0;
+  left: 0;
+  outline: none;
+  width: 50%;
+  margin: 100px auto;
+}
+.list {
+  position: relative;
+  background-color: #1b1b1b;
+  margin: 100px;
+  width: 90%;
+  min-height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ul {
+  display: flex;
+  width: 100%;
+  margin: 5em auto;
+  padding-top: 10px;
+  padding: 30px;
+  max-width: 1170px;
+  position: relative;
+  &:before {
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 0%;
+    height: 1px;
+    opacity: 0;
+    background-color: #ffffff;
+    transition: width 0.6s, opacity 0.6s;
+    transition-timing-function: ease;
+  }
+
+  &.load:before {
+    opacity: 1;
+    width: 100%;
+  }
+  li {
+    display: inline-block;
+    position: relative;
+    width: 16.6667%;
+    min-width: 150px;
+    padding-left: 15px;
+    padding-top: 3.5%;
+    padding-right: 15px;
+    vertical-align: top;
+    top: -3.5%;
+    // border-top: 1px solid #ffffff;
+    // animation-name: fade-in;
+    // animation-fill-mode: both;
+    // animation-duration: 1s;
+    // transition-delay: .3s;
+    // transition-duration: 1.2s;
+    span {
+      opacity: 0;
+      position: absolute;
+      top: calc((3.5% + 5px) * -1);
+      left: 16px;
+      width: 1px;
+      height: 20px;
+      background-color: #ffffff;
+      transform: translate3d(0, -100px, 0);
+      animation: fade-inLine 0.8s;
+      animation-fill-mode: forwards;
+    }
+    p {
+      display: block;
+      color: #ffffff;
+      font-size: 1.444em;
+    }
+    div {
+      opacity: 0;
+      animation: fade-in 2s;
+      animation-fill-mode: forwards;
+    }
+  }
+}
+.shaders,
+.shaders2,
+.shaders3,
+.shaders4,
+.shaders5,
+.shaders6 {
+  margin: 100px;
+  width: 90%;
+  min-height: 800px;
+}
+.canvas__wrapper {
+  margin: 100px;
+  width: 90%;
+  min-height: 800px;
+  background: linear-gradient(to right, rgb(29, 43, 100), rgb(248, 205, 218));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mask {
+  overflow: hidden;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    rgba(5, 26, 115, 1) 0%,
+    rgba(27, 89, 198, 1) 13%,
+    rgba(10, 190, 249, 1) 26%,
+    rgba(30, 202, 188, 1) 39%,
+    rgba(42, 179, 125, 1) 51%,
+    rgba(131, 149, 47, 1) 59%,
+    rgba(226, 221, 93, 1) 72%,
+    rgba(243, 228, 83, 1) 84%,
+    rgba(233, 200, 59, 1) 92%,
+    rgba(205, 147, 47, 1) 100%
+  );
+  background-size: 400% 400%;
+  transition: transform 1s ease;
+  transform-style: preserve-3d;
+  box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.2);
+  animation: gradient 6s ease infinite;
+  &__wrapper {
+    perspective: 1200px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s ease;
+    &.active {
+      transform: rotate3d(1, 0.6, 0.7, 45deg);
+    }
+  }
+  &__back {
+    background: linear-gradient(to top left, #ffa17f, #00223e);
+    overflow: hidden;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    // background: linear-gradient(90deg, rgba(5,26,115,1) 0%, rgba(27,89,198,1) 13%, rgba(10,190,249,1) 26%, rgba(30,202,188,1) 39%, rgba(42,179,125,1) 51%, rgba(131,149,47,1) 59%, rgba(226,221,93,1) 72%, rgba(243,228,83,1) 84%, rgba(233,200,59,1) 92%, rgba(205,147,47,1) 100%);;
+    background-size: 400% 400%;
+    transform-style: preserve-3d;
+    box-shadow: 1px 3px 3px rgba(0, 0, 0, 0.2);
+    animation: gradient 6s ease infinite;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  &__gradient {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: right 68%;
+    }
+  }
+}
+
+@for $i from 1 through 7 {
+  .list li:nth-child(#{$i}) span {
+    animation-delay: #{0.3+ ($i)/3}s;
+  }
+  .list li:nth-child(#{$i}) div {
+    animation-delay: #{0.3+ ($i)/3}s;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-inLine {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -100px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
